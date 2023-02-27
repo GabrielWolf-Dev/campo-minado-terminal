@@ -73,6 +73,10 @@ public class Field {
 		undermined = true;
 	}
 	
+	public boolean isUndermine() {
+		return undermined;
+	}
+	
 	public boolean isMarked() {
 		return marked;
 	}
