@@ -84,4 +84,43 @@ public class Field {
 	public boolean isClose() {
 		return !open;
 	}
+
+	public int getLine() {
+		return line;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+	
+	boolean goalReached() {
+		boolean unraveled = !undermined && open;
+		boolean protect = undermined && marked;
+		
+		return unraveled || protect;
+	}
+	
+	long mineNeighbor() {
+		return neighbors.stream().filter(n -> n.undermined).count();
+	}
+	
+	void restart() {
+		open = false;
+		undermined = false;
+		marked = false;
+	}
+	
+	public String toString() {
+		if(marked) {
+			return "x";
+		} else if(open && undermined) {
+			return "*";
+		} else if (open && mineNeighbor() > 0) {
+			return Long.toString(mineNeighbor());
+		} else if(open) {
+			return " ";
+		} else {
+			return "?";
+		}
+	}
 }
