@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
+import br.com.cod3r.cm.exception.ExplosionException;
+
 public class Board {
 	private int lines;
 	private int columns;
@@ -23,10 +25,15 @@ public class Board {
 	}
 	
 	public void open(int line, int column) {
-		fields.parallelStream()
-			.filter(f -> f.getLine() == line && f.getColumn() == column)
-			.findFirst()
-			.ifPresent(f -> f.open());
+		try {
+			fields.parallelStream()
+				.filter(f -> f.getLine() == line && f.getColumn() == column)
+				.findFirst()
+				.ifPresent(f -> f.open());
+		} catch(ExplosionException e) {
+			fields.forEach(f -> f.setOpen(true));
+			throw e;
+		}
 	}
 	
 	public void handleMarked(int line, int column) {
